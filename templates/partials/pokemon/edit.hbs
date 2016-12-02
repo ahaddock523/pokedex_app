@@ -1,0 +1,101 @@
+<h2>{{data.title}}</h2>
+
+<div>
+    <form class="form-inline" method="POST" enctype="application/x-www-form-urlencoded" action="/pokemon/{{data.pokemon.id}}">
+        <input name="_method" type="hidden" value="{{data.method}}">
+
+        <div class="form-group">
+            <label>Pokemon Id:</label>
+            <input class="form control" name="pId" type="number" value="{{data.pokemon.pId}}">
+        </div>
+        <div class="form-group">
+            <label>Name:</label>
+            <input class="form control" name="name" type="text" value="{{data.pokemon.name}}">
+        </div>
+        <div class="form-group">
+            <div class="dropdown">
+                <label>Type: </label>
+                <select name="type">
+                    {{#each data.typeList }}
+                        <option class="{{ class }}" value="{{ value }}" {{ selected }}>{{ value }}</option>
+                    {{/each}}
+
+                    <!-- <option class="bug" value="Bug">Bug</option>
+                    <option class="dark" value="Dark">Dark</option>
+                    <option class="dragon"value="Dragon" selected="false">Dragon</option>
+                    <option class="electric" value="Electric">Electric</option>
+                    <option class="fairy" value="Fairy">Fairy</option>
+                    <option class="fighting" value="Fighting">Fighting</option>
+                    <option class="fire" value="Fire">Fire</option>
+                    <option class="flying" value="Flying">Flying</option>
+                    <option class="ghost" value="Ghost">Ghost</option>
+                    <option class="grass" value="Grass">Grass</option>
+                    <option class="ground" value="Ground">Ground</option>
+                    <option class"ice" value="Ice">Ice</option>
+                    <option class="normal" value="Normal">Normal</option>
+                    <option class="poison" value="Poison">Poison</option>
+                    <option class="psychic" value="Psychic">Psychic</option>
+                    <option class="rock" value="Rock">Rock</option>
+                    <option class="steel" value="Steel">Steel</option>
+                    <option class="water" value="Water">Water</option> -->
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Species:</label>
+            <input class="form control" name="species" type="text" value="{{data.pokemon.species}}">
+        </div>
+        <div class="form-group">
+            <label>Height:</label>
+            <input class="form control" name="height" type="text" value="{{data.pokemon.height}}">
+        </div>
+        <div class="form-group">
+            <label>Weight:</label>
+            <input class="form control" name="weight" type="text" value="{{data.pokemon.weight}}">
+        </div>
+        <div class="form-group">
+            <label>Ability:</label>
+            <input class="form control" name="ability" type="text" value="{{data.pokemon.ability}}">
+        </div>
+        <br>
+        <div class="form-group">
+            <label>HP:</label>
+            <input class="form control" name="health" type="number" value="{{data.pokemon.health}}">
+        </div>
+        <div class="form-group">
+            <label>Attack:</label>
+            <input class="form control" name="attack" type="number" value="{{data.pokemon.attack}}">
+        </div>
+        <div class="form-group">
+            <label>Defense:</label>
+            <input class="form control" name="defense" type="number" value="{{data.pokemon.defense}}">
+        </div>
+        <div class="form-group">
+            <label>Special Attack:</label>
+            <input class="form control" name="spAttack" type="number" value="{{data.pokemon.spAttack}}">
+        </div>
+        <div class="form-group">
+            <label>Special Defense:</label>
+            <input class="form control" name="spDefense" type="number" value="{{data.pokemon.spDefense}}">
+        </div>
+        <div class="form-group">
+            <label>Speed:</label>
+            <input class="form control" name="speed" type="number" value="{{data.pokemon.speed}}">
+        </div>
+        <div class="form-group">
+            <label>Pokemon Generation:</label>
+            <input class="form control" name="generation" type="text" value="{{data.pokemon.generation}}">
+        </div>
+            <br>
+            <button type="Submit" class="btn btn-success">Save Changes</button>
+    </form>
+</div>
+
+<script>
+$('.dropdown-menu li').click(function(){
+    var textLabel = $(this).text ();
+    $(this).parent ().parent ().find ('button').text (textLabel);
+    // console.log ('**** here ')
+    // $('#selected').text($(this).text());
+});
+</script>

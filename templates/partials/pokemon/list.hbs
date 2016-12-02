@@ -1,0 +1,52 @@
+<h2>Add Pokemon to Pokedex</h2>
+
+<a class="btn btn-primary" href="/pokemon/create">Add Pokemon</a>
+
+{{#each data.pokemonList}}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div>
+            <strong>Pokemon ID: </strong> {{ pId }}
+        </div>
+        <div>
+            <strong>Name: </strong> <a href="/pokemon/{{ id }}"> {{ name }} </a>
+        </div>
+        <div>
+            <strong>Type: </strong> {{ type }}
+        </div>
+        <div>
+            <strong>Species: </strong> {{ species }}
+        </div>
+        <div>
+            <strong>Height: </strong> {{ height }}
+        </div>
+        <div>
+            <strong>Weight: </strong> {{ weight }}
+        </div>
+        <div>
+            <strong>Ability: </strong> {{ ability }}
+        </div>
+        <div>
+            <strong>HP: </strong> {{ health }}
+        </div>
+        <div>
+            <strong>Attack: </strong> {{ attack }}
+        </div>
+        <div>
+            <strong>Defense: </strong> {{ defense }}
+        </div>
+        <div>
+            <strong>Special Attack: </strong> {{ spAttack }}
+        </div>
+        <div>
+            <strong>Special Defense: </strong> {{ spDefense }}
+        </div>
+        <div>
+            <strong>Speed: </strong> {{ speed }}
+        </div>
+        <div>
+            <strong>Generation: </strong> {{ generation }}
+        </div>
+    </div>
+</div>
+{{/each}}

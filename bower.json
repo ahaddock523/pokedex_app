@@ -1,0 +1,21 @@
+{
+  "name": "pokedex-app",
+  "description": "a pokemon encyclopedia application",
+  "main": "app.js",
+  "authors": [
+    "Andrew Haddock"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "less": "^2.7.1",
+    "bootstrap": "^3.3.7"
+  }
+}

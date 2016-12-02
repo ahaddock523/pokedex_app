@@ -1,0 +1,51 @@
+<h2>Pokemon</h2>
+
+<a class="btn btn-warning" href="/pokemon/{{ data.pokemon.id }}/edit">Edit Pokemon</a>
+<a class="btn btn-danger" href="/pokemon/{{ data.pokemon.id }}/delete">Delete Pokemon</a>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div>
+            <strong>Pokemon ID: </strong> {{ data.pokemon.pId }}
+        </div>
+        <div>
+            <strong>Name: </strong> {{ data.pokemon.name }}
+        </div>
+        <div>
+            <strong>Type: </strong> {{ data.pokemon.type }}
+        </div>
+        <div>
+            <strong>Species: </strong> {{ data.pokemon.species }}
+        </div>
+        <div>
+            <strong>Height: </strong> {{ data.pokemon.height }}
+        </div>
+        <div>
+            <strong>Weight: </strong> {{ data.pokemon.weight }}
+        </div>
+        <div>
+            <strong>Ability: </strong> {{ data.pokemon.ability }}
+        </div>
+        <div>
+            <strong>HP: </strong> {{ data.pokemon.health }}
+        </div>
+        <div>
+            <strong>Attack: </strong> {{ data.pokemon.attack }}
+        </div>
+        <div>
+            <strong>Defense: </strong> {{ data.pokemon.defense }}
+        </div>
+        <div>
+            <strong>Special Attack: </strong> {{ data.pokemon.spAttack }}
+        </div>
+        <div>
+            <strong>Special Defense: </strong> {{ data.pokemon.spDefense }}
+        </div>
+        <div>
+            <strong>Speed: </strong> {{ data.pokemon.speed }}
+        </div>
+        <div>
+            <strong>Generation: </strong> {{ data.pokemon.generation }}
+        </div>
+    </div>
+</div>
