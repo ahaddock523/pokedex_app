@@ -36,13 +36,13 @@
                         <li><a href="/pokemon">Pokemon</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <!-- {{#if user }}
-                            <li><a href="/user/dashboard">Dashboard</a></li>
-                            <li><a href="/user/logout">Logout</a><li>
+                        {{#if user }}
+                            <li><a href="/search"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+                            <li><a href="/user/logout"><span class="glyphicons glyphicons-exit"></span> Logout</a><li>
                         {{else }}
-                            <li><a href="/user/login">Login</a><li>
-                            <li><a href="/user/register">Register</a></li>
-                        {{/if}} -->
+                            <li><a href="/user/login"><span class="glyphicon glyphicon-log-in"></span> Login</a><li>
+                            <li><a href="/user/register"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+                        {{/if}}
                     </ul>
                 </div>
         </nav>

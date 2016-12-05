@@ -4,6 +4,12 @@ var router = express.Router();
 
 var User = require('../model/user.js');
 
+var auth = function(request, response, next) {
+    if (request.session && request.sessions.user === "testadmin" && request.session.admin)
+    return next();
+    else return res.sendStatus(401);
+}
+
 router.get('/login', function(request, response) {
     if (request.session.user) {
         response.redirect('/search');
@@ -70,6 +76,7 @@ router.post('/register', function(request, response) {
 
 router.get('/logout', function(request, response) {
     request.session.destroy();
+
     response.redirect('/user/login');
 });
 

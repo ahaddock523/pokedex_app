@@ -1,7 +1,14 @@
 <h2>Pokedex Login</h2>
 
+{{#if message.error}}
+    <div class="error notice">
+        <p>{{message.error}}</p>
+    </div>
+{{/if}}
+
 {{#if message.success}}
     <div class="success notice">
+        <p>{{message.success}}</p>
     </div>
 {{/if}}
 

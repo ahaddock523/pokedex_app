@@ -1,5 +1,11 @@
 <h2>Add Pokemon to Pokedex</h2>
 
+{{#if message.success}}
+    <div class="success notice">
+        <p>{{message.success}}</p>
+    </div>
+{{/if}}
+
 <a class="btn btn-primary" href="/pokemon/create">Add Pokemon</a>
 
 {{#each data.pokemonList}}

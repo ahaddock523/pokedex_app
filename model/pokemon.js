@@ -18,7 +18,12 @@ var pokemonSchema = new Schema ({
     spAttack: Number,
     spDefense: Number,
     speed: Number,
-    generation: String
+    generation: String,
+
+    // Telling mongoose linking to another object by the objects ID,
+    // ref is the object we are linking to
+    moves: [{ type: Schema.Types.ObjectId, ref: 'Move'}]
+    // author: { type: Schema.Types.ObjectId, ref: 'User'}
 });
 
 // Create model object

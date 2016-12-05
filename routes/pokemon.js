@@ -4,6 +4,8 @@ var router = express.Router();
 
 var Pokemon = require('../model/pokemon.js');
 
+var Move = require('../model/moveList.js');
+
 router.get('/', function(request, response) {
 
     Pokemon.find({}).sort('pId').exec(function(error, result) {
@@ -27,11 +29,70 @@ router.get('/', function(request, response) {
     });
 });
 
+// router.get('/test', function(request, response) {
+//     var httpRequest = require('request');
+//
+//     httpRequest.get(
+//         // Set the configuration data for sending the request.
+//         {
+//             url:'http://pokeapi.co/api/v2/pokemon/1',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         },
+//
+//         // Callback to handle the response of the call.
+//         function (error, httpResponse) {
+//             if (error) {
+//                 console.log ('Error: ', error);
+//                 response.send('There was a probelm');
+//             }
+//             else {
+//                 var data = JSON.parse(httpResponse.body);
+//
+//                 for (i = 0; i < 4; i++){
+//                     console.log('Move list: ' + data.moves[i].move.name);
+//                 }
+//                 // console.log ('http response: ', data.moves[0].move.name);
+//                 response.send('request was made');
+//             }
+//         }
+//     )
+// })
+
 router.get('/create', function(request, response) {
+    var list = [
+        { value: 'Bug'},
+        { value: 'Dark'},
+        { value: 'Dragon'},
+        { value: 'Electric'},
+        { value: 'Fairy'},
+        { value: 'Fighting'},
+        { value: 'Fire'},
+        { value: 'Flying'},
+        { value: 'Ghost'},
+        { value: 'Grass'},
+        { value: 'Ground'},
+        { value: 'Ice'},
+        { value: 'Normal'},
+        { value: 'Poison'},
+        { value: 'Psychic'},
+        { value: 'Rock'},
+        { value: 'Steel'},
+        { value: 'Water'}
+    ];
+
+    var key, item;
+    for (key in list) {
+        // Grab the item in the list.
+        item = list [key];
+    item.class = item.value.toLowerCase ();
+}
     response.render('pokemon/edit', {
         data: {
             title: 'Add Pokedex Entry',
-            method: 'POST'
+            method: 'POST',
+            typeList: list
         }
     });
 });
@@ -40,30 +101,74 @@ router.get('/create', function(request, response) {
 router.post('/', function(request, response) {
     console.log('Data received: ', request.body);
 
-    var newPokemon = Pokemon(request.body);
+    var httpRequest = require('request');
 
-        newPokemon.save (function(error) {
+    httpRequest.get(
+        {
+            url:'http://pokeapi.co/api/v2/pokemon/7' + request.body.pId,
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        },
+
+        function(error, pokemonData) {
             if (error) {
-                var errorMessage = 'Unable to save the pokedex entry to the database.'
-                console.error('***ERROR: ', errorMessage);
-                console.error(error);
-                response.send(errorMessage);
+                console.log('ERROR: ', error);
+                response.send('There was a problem getting the API data.');
             }
             else {
-                if (request.sendJson) {
-                    response.json({
-                        message: 'New pokedex entry was saved.'
-                    });
-                }
-                else {
-                    // Add a flash message for successful creation
-                    request.flash('success', 'Pokedex entry was added.');
+                var data = JSON.parse(pokemonData.body);
 
-                    // Redirect back to the Pokemon add page.
-                    response.redirect('/pokemon');
+                var moveList = [];
+                var move;
+                for (i = 0; i < 4; i++) {
+                    move = {
+                        name: data.moves[i].move.name
+                    }
+
+                    moveList.push(move);
+
+                    console.log('Move List: ', moveList[i].name);
                 }
+
+
+                Move.insertMany(moveList, function(error, savedMoves) {
+                    if (error) {
+                        console.log('There was an error adding the move list to the database.');
+                        response.send('There was an error adding the move list.');
+                    }
+                    else {
+                            var newPokemon = Pokemon(request.body);
+                            newPokemon.moves = savedMoves;
+
+                                newPokemon.save (function(error, result) {
+                                    if (error) {
+                                        var errorMessage = 'Unable to save the pokedex entry to the database.'
+                                        console.error('***ERROR: ', errorMessage);
+                                        console.error(error);
+                                        response.send(errorMessage);
+                                    }
+                                    else {
+                                        if (request.sendJson) {
+                                            response.json({
+                                                message: 'New pokedex entry was saved.'
+                                            });
+                                        }
+                                        else {
+
+                                            // Add a flash message for successful creation
+                                            request.flash('success', 'Pokedex entry was added.');
+
+                                            // Redirect back to the Pokemon add page.
+                                            response.redirect('/pokemon');
+                                        }
+                                    }
+                                })
+                    }
+                })
             }
-        })
+        }
+    )
 });
 
 // Route to grab a specific pokemon by its Id
