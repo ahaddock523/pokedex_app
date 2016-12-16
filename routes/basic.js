@@ -14,4 +14,10 @@ router.get('/search', function(request, response) {
     response.render('search');
 });
 
+router.get('/user', function(request, response) {
+    response.render('home', {
+        layout: 'index-angular'
+    });
+});
+
 module.exports = router;

@@ -1,4 +1,12 @@
 <h2>Home</h2>
 
 <h3>Welcome to the Pokedex Search App</h3>
+
+{{#if user}}
+<p>Proceed to the search page to find info about your Pokemon!</p>
+<a class="btn btn-warning" href="search">Search Pokedex</a>
+
+{{else }}
 <p>Please <a href="user/login">Login</a> or <a href="user/register">Register</a> a new login</p>
+
+{{/if}}

@@ -24,6 +24,7 @@ router.get('/', function(request, response) {
                         pokemonList: result
                     }
                 });
+                // console.log('******TEST: ', result);
             }
         }
     });
@@ -105,7 +106,7 @@ router.post('/', function(request, response) {
 
     httpRequest.get(
         {
-            url:'http://pokeapi.co/api/v2/pokemon/7' + request.body.pId,
+            url:'http://pokeapi.co/api/v2/pokemon/' + request.body.pId,
             headers: {
                 'Content-Type' : 'application/json'
             }
@@ -171,24 +172,65 @@ router.post('/', function(request, response) {
     )
 });
 
+// Route to search for pokemon by name
+router.get('/search', function(request, response) {
+    var pokemonName = request.query.name;
+    console.log('***HERE***', pokemonName);
+
+    Pokemon.findOne({name: pokemonName}, function(error, result) {
+        if (error) {
+            var errorMessage = 'Unable to find pokemon by name ' + pokemonName;
+            console.error('***ERROR: ' + errorMessage);
+            response.send(errorMessage);
+            return;
+        }
+
+        if (result == null) {
+            response.send('Pokemon not found.');
+            return;
+        }
+        else {
+            response.redirect('/pokemon/' + result.id);
+        }
+    })
+})
+
+
 // Route to grab a specific pokemon by its Id
 router.get('/:id', function(request, response) {
     var pokemonId = request.params.id;
 
-    Pokemon.findById (pokemonId, function(error, result) {
-        if (error) {
-            var errorMessage = 'Unable to find pokedex entry by id: ' + pokemonId;
-            console.error('***ERROR: ', errorMessage);
-            response.send(errorMessage);
-        }
-        else {
-            response.render('pokemon/view', {
-                data: {
-                    pokemon: result
+        Pokemon
+            .findById(pokemonId)
+            .populate('moves')
+            .exec(function(error, result) {
+                if (error) {
+                    var errorMessage = 'Unable to find pokedex entry by id: ' + pokemonId;
+                    console.error('***ERROR: ', errorMessage);
+                    response.send(errorMessage);
+                }
+                else {
+                    response.render('pokemon/view', {
+                        data: {
+                            pokemon: result
+                        }
+                    });
                 }
             });
-        }
-    });
+    // Pokemon.findById (pokemonId, function(error, result) {
+    //     if (error) {
+    //         var errorMessage = 'Unable to find pokedex entry by id: ' + pokemonId;
+    //         console.error('***ERROR: ', errorMessage);
+    //         response.send(errorMessage);
+    //     }
+    //     else {
+    //         response.render('pokemon/view', {
+    //             data: {
+    //                 pokemon: result
+    //             }
+    //         });
+    //     }
+    // });
 });
 
 // Route to show the pokedex edit form
@@ -232,7 +274,7 @@ router.get('/:id/edit', function(request, response) {
 
                 // Check if the pokemon returned has a type
                 // value equal to the value of the type in the list.
-                console.log (item);
+                // console.log (item);
                 if (result.type.toLowerCase () == item.value.toLowerCase ()) {
                     // Set that the type is selected.
                     item.selected = 'selected';
@@ -257,6 +299,38 @@ router.get('/:id/edit', function(request, response) {
 router.put('/:id', function(request, response) {
     var pokemonId = request.params.id;
 
+    // var httpRequest = require('request');
+    //
+    // httpRequest.get(
+    //     {
+    //         url:'http://pokeapi.co/api/v2/pokemon/' + pokemonId,
+    //         headers: {
+    //             'Content-Type' : 'application/json'
+    //         }
+    //     },
+    //
+    //     function(error, pokemonData) {
+    //         if (error) {
+    //             console.log('ERROR: ', error);
+    //             response.send('There was a problem getting the API data for moveset.');
+    //         }
+    //         else {
+    //             var data = JSON.parse(pokemonData.body);
+    //
+    //             var moveList = [];
+    //             var move;
+    //             for(i = 0; i < 4; i++) {
+    //                 move = {
+    //                     name: data.moves[i].move.name
+    //                 }
+    //
+    //                 moveList.push(move);
+    //
+    //                 console.log('Move List: ', moveList[i].name);
+    //             }
+    //         }
+    //     }
+    // )
     Pokemon.findByIdAndUpdate (pokemonId, request.body,
         function(error, result) {
         if (error) {

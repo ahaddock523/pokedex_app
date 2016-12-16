@@ -47,5 +47,12 @@
         <div>
             <strong>Generation: </strong> {{ data.pokemon.generation }}
         </div>
+        <div>
+            {{#each data.pokemon.moves}}
+            <div>
+                <strong>Move:</strong> {{name}}
+            </div>
+            {{/each}}
+        </div>
     </div>
 </div>
