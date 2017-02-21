@@ -63,27 +63,51 @@ var flash = require ('connect-flash');
 // Set our server app to use the flash message object.
 server.use(flash());
 
-// Set a global function that will be run before any routes run.
-server.use (function(request, response, next) {
-    // Set the local data in the template to use the user session data.
-    response.locals.user = request.session.user;
 
-    // Set the flash object to be set and used
-    // before running any other routes or functions.
+server.use(function(request, response, next) {
+    var user = request.session.user;
+    if(user) {
+        response.locals.user = user;
+
+        if (user && user.type == 'admin') {
+            user.admin = true;
+        }
+    }
+
     response.locals.message = request.flash();
 
-    // Grab the content-type from the request.
     var contentType = request.headers['content-type'];
     request.contentType = contentType;
 
-    // Set our request object to use JSON if application/json request is made
-    if (contentType == 'application/json') {
+    console.log('****ct: ', contentType);
+
+    if(request.contentType == 'application/json') {
         request.sendJson = true;
     }
 
     next();
-
-});
+})
+// // Set a global function that will be run before any routes run.
+// server.use (function(request, response, next) {
+//     // Set the local data in the template to use the user session data.
+//     response.locals.user = request.session.user;
+//
+//     // Set the flash object to be set and used
+//     // before running any other routes or functions.
+//     response.locals.message = request.flash();
+//
+//     // Grab the content-type from the request.
+//     var contentType = request.headers['content-type'];
+//     request.contentType = contentType;
+//
+//     // Set our request object to use JSON if application/json request is made
+//     if (contentType == 'application/json') {
+//         request.sendJson = true;
+//     }
+//
+//     next();
+//
+// });
 
 
 
@@ -108,7 +132,7 @@ var mongoClient = require('mongodb').MongoClient;
 global.db;
 
 // Connection to database
-mongoClient.connect ('mongodb://localhost:27017/pokedex_database', function(error, database) {
+mongoClient.connect ('mongodb://ahaddock:password@ds145369.mlab.com:45369/pokedex', function(error, database) {
     if(error) {
         console.error('*** ERROR: Unable to connec to the mongo database.');
         console.error(error);
@@ -132,7 +156,7 @@ mongoClient.connect ('mongodb://localhost:27017/pokedex_database', function(erro
 var mongoose = require ('mongoose');
 
 // Connect mongoose to mongodb server
-mongoose.connect('mongodb://localhost:27017/pokedex_database');
+mongoose.connect('mongodb://ahaddock:password@ds145369.mlab.com:45369/pokedex');
 
 // set mongoose promise library to use
 mongoose.Promise = require('bluebird');

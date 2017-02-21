@@ -8,6 +8,7 @@ var pokemonSchema = new Schema ({
     pId: Number,
     name: String,
     type: String,
+    // type2: String,
     species: String,
     height: String,
     weight: String,

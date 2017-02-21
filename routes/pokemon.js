@@ -210,11 +210,16 @@ router.get('/:id', function(request, response) {
                     response.send(errorMessage);
                 }
                 else {
-                    response.render('pokemon/view', {
-                        data: {
-                            pokemon: result
-                        }
-                    });
+                    if (request.sendJson) {
+                        response.json(result)
+                    }
+                    else {
+                        response.render('pokemon/view', {
+                            data: {
+                                pokemon: result
+                            }
+                        });
+                    }
                 }
             });
     // Pokemon.findById (pokemonId, function(error, result) {

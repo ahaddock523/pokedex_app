@@ -1,0 +1,57 @@
+<h2>Search Page</h2>
+
+<button ng-click="searchController.read()">Show Pokemon</button>
+
+<ul>
+    <li ng-repeat="pokemon in searchController.list">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div>
+                    <strong>Pokemon ID: </strong> {{ pokemon.pId }}
+                </div>
+                <div>
+                    <strong>Name: </strong> <a href="#" ng-click="searchController.goToPage('view', {id:pokemon._id})"> {{ pokemon.name }} </a>
+                </div>
+                <div>
+                    <strong>Type 1: </strong> {{ pokemon.type }}
+                </div>
+                <!-- <div>
+                    <strong>Type 2: </strong> {{ type2 }}
+                </div> -->
+                <div>
+                    <strong>Species: </strong> {{ pokemon.species }}
+                </div>
+                <div>
+                    <strong>Height: </strong> {{ pokemon.height }}
+                </div>
+                <div>
+                    <strong>Weight: </strong> {{ pokemon.weight }}
+                </div>
+                <div>
+                    <strong>Ability: </strong> {{ pokemon.ability }}
+                </div>
+                <div>
+                    <strong>HP: </strong> {{ pokemon.health }}
+                </div>
+                <div>
+                    <strong>Attack: </strong> {{ pokemon.attack }}
+                </div>
+                <div>
+                    <strong>Defense: </strong> {{ pokemon.defense }}
+                </div>
+                <div>
+                    <strong>Special Attack: </strong> {{ pokemon.spAttack }}
+                </div>
+                <div>
+                    <strong>Special Defense: </strong> {{ pokemon.spDefense }}
+                </div>
+                <div>
+                    <strong>Speed: </strong> {{ pokemon.speed }}
+                </div>
+                <div>
+                    <strong>Generation: </strong> {{ pokemon.generation }}
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>
