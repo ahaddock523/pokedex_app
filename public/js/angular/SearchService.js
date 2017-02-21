@@ -20,6 +20,18 @@ var App;
             });
             return promise;
         };
+        SearchService.prototype.search = function () {
+            var url = "/pokemon/search";
+            var promise = this.httpService({
+                url: url,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {}
+            });
+            return promise;
+        };
         return SearchService;
     }());
     SearchService.$inject = ['$http'];

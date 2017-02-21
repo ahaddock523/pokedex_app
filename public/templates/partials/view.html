@@ -1,5 +1,5 @@
 <!-- <div ng-repeat="pokemon in searchController.list"> -->
-<h2>Details for {{searchController.pokemon._id}}</h2>
+<h2>Details for {{searchController.individual.name}}</h2>
 
 <a class="btn btn-primary" href="/user/#/search">Back to Search</a>
 <!-- <a class="btn btn-primary" ng-click="searchController.read(_id)">Load</a> -->
@@ -8,56 +8,57 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div>
-                <strong>Pokemon ID: </strong> {{ searchController.pokemon.pId }}
+                <strong>Pokemon ID: </strong> {{ searchController.individual.pId }}
             </div>
             <div>
-                <strong>Name: </strong> {{ pokemon.name }}
+                <strong>Name: </strong> {{ searchController.individual.name }}
             </div>
             <div>
-                <strong>Type 1: </strong> {{ pokemon.type }}
+                <strong>Type 1: </strong> {{ searchController.individual.type }}
             </div>
             <!-- <div>
                     <strong>Type 2: </strong> {{ pokemon.type2 }}
                 </div> -->
             <div>
-                <strong>Species: </strong> {{ pokemon.species }}
+                <strong>Species: </strong> {{ searchController.individual.species }}
             </div>
             <div>
-                <strong>Height: </strong> {{ pokemon.height }}
+                <strong>Height: </strong> {{ searchController.individual.height }}
             </div>
             <div>
-                <strong>Weight: </strong> {{ pokemon.weight }}
+                <strong>Weight: </strong> {{ searchController.individual.weight }}
             </div>
             <div>
-                <strong>Ability: </strong> {{ pokemon.ability }}
+                <strong>Ability: </strong> {{ searchController.individual.ability }}
             </div>
             <div>
-                <strong>HP: </strong> {{ pokemon.health }}
+                <strong>HP: </strong> {{ searchController.individual.health }}
             </div>
             <div>
-                <strong>Attack: </strong> {{ pokemon.attack }}
+                <strong>Attack: </strong> {{ searchController.individual.attack }}
             </div>
             <div>
-                <strong>Defense: </strong> {{ pokemon.defense }}
+                <strong>Defense: </strong> {{ searchController.individual.defense }}
             </div>
             <div>
-                <strong>Special Attack: </strong> {{ pokemon.spAttack }}
+                <strong>Special Attack: </strong> {{ searchController.individual.spAttack }}
             </div>
             <div>
-                <strong>Special Defense: </strong> {{ pokemon.spDefense }}
+                <strong>Special Defense: </strong> {{ searchController.individual.spDefense }}
             </div>
             <div>
-                <strong>Speed: </strong> {{ pokemon.speed }}
+                <strong>Speed: </strong> {{ searchController.individual.speed }}
             </div>
             <div>
-                <strong>Generation: </strong> {{ pokemon.generation }}
+                <strong>Generation: </strong> {{ searchController.individual.generation }}
             </div>
+            <br>
             <div>
 
                 <div>
                     <ul ng-repeat="pokemon in searchController.individual.moves">
                         <li>
-                            <strong>Move:</strong> {{name}}
+                            <strong>Move:</strong> {{pokemon.name}}
                         </li>
                     </ul>
                 </div>

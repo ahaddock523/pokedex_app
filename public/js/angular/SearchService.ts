@@ -27,6 +27,20 @@ namespace App {
             });
             return promise;
         }
+
+        public search() {
+            let url="/pokemon/search";
+
+            let promise = this.httpService({
+                url:url,
+                method:'GET',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                data:{}
+            });
+            return promise;
+        }
     }
     app.service('SearchService', SearchService);
 }

@@ -7,27 +7,31 @@ var Pokemon = require('../model/pokemon.js');
 var Move = require('../model/moveList.js');
 
 router.get('/', function(request, response) {
+    if (request.session.user) {
 
-    Pokemon.find({}).sort('pId').exec(function(error, result) {
-        if(error) {
-            var errorMessage = 'Unable to save the pokedex entry to the page.';
-            console.error('***ERROR: ', errorMessage);
-        }
-        else {
-            if (request.sendJson) {
-                response.json({ result });
+        Pokemon.find({}).sort('pId').exec(function(error, result) {
+            if (error) {
+                var errorMessage = 'Unable to save the pokedex entry to the page.';
+                console.error('***ERROR: ', errorMessage);
+            } else {
+                if (request.sendJson) {
+                    response.json({
+                        result
+                    });
+                } else {
+                    console.log('***RESULT: ', result);
+                    response.render('pokemon/list', {
+                        data: {
+                            pokemonList: result
+                        }
+                    });
+                    // console.log('******TEST: ', result);
+                }
             }
-            else {
-                console.log('***RESULT: ', result);
-                response.render('pokemon/list', {
-                    data: {
-                        pokemonList: result
-                    }
-                });
-                // console.log('******TEST: ', result);
-            }
-        }
-    });
+        });
+    } else {
+        response.redirect('/user/login');
+    }
 });
 
 // router.get('/test', function(request, response) {
@@ -62,33 +66,68 @@ router.get('/', function(request, response) {
 // })
 
 router.get('/create', function(request, response) {
-    var list = [
-        { value: 'Bug'},
-        { value: 'Dark'},
-        { value: 'Dragon'},
-        { value: 'Electric'},
-        { value: 'Fairy'},
-        { value: 'Fighting'},
-        { value: 'Fire'},
-        { value: 'Flying'},
-        { value: 'Ghost'},
-        { value: 'Grass'},
-        { value: 'Ground'},
-        { value: 'Ice'},
-        { value: 'Normal'},
-        { value: 'Poison'},
-        { value: 'Psychic'},
-        { value: 'Rock'},
-        { value: 'Steel'},
-        { value: 'Water'}
+    var list = [{
+            value: 'Bug'
+        },
+        {
+            value: 'Dark'
+        },
+        {
+            value: 'Dragon'
+        },
+        {
+            value: 'Electric'
+        },
+        {
+            value: 'Fairy'
+        },
+        {
+            value: 'Fighting'
+        },
+        {
+            value: 'Fire'
+        },
+        {
+            value: 'Flying'
+        },
+        {
+            value: 'Ghost'
+        },
+        {
+            value: 'Grass'
+        },
+        {
+            value: 'Ground'
+        },
+        {
+            value: 'Ice'
+        },
+        {
+            value: 'Normal'
+        },
+        {
+            value: 'Poison'
+        },
+        {
+            value: 'Psychic'
+        },
+        {
+            value: 'Rock'
+        },
+        {
+            value: 'Steel'
+        },
+        {
+            value: 'Water'
+        }
     ];
 
     var key, item;
     for (key in list) {
         // Grab the item in the list.
-        item = list [key];
-    item.class = item.value.toLowerCase ();
-}
+        item = list[key];
+        item.class = item.value.toLowerCase();
+    }
     response.render('pokemon/edit', {
         data: {
             title: 'Add Pokedex Entry',
@@ -104,11 +143,10 @@ router.post('/', function(request, response) {
 
     var httpRequest = require('request');
 
-    httpRequest.get(
-        {
-            url:'http://pokeapi.co/api/v2/pokemon/' + request.body.pId,
+    httpRequest.get({
+            url: 'http://pokeapi.co/api/v2/pokemon/' + request.body.pId,
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type': 'application/json'
             }
         },
 
@@ -116,8 +154,7 @@ router.post('/', function(request, response) {
             if (error) {
                 console.log('ERROR: ', error);
                 response.send('There was a problem getting the API data.');
-            }
-            else {
+            } else {
                 var data = JSON.parse(pokemonData.body);
 
                 var moveList = [];
@@ -137,34 +174,31 @@ router.post('/', function(request, response) {
                     if (error) {
                         console.log('There was an error adding the move list to the database.');
                         response.send('There was an error adding the move list.');
-                    }
-                    else {
-                            var newPokemon = Pokemon(request.body);
-                            newPokemon.moves = savedMoves;
+                    } else {
+                        var newPokemon = Pokemon(request.body);
+                        newPokemon.moves = savedMoves;
 
-                                newPokemon.save (function(error, result) {
-                                    if (error) {
-                                        var errorMessage = 'Unable to save the pokedex entry to the database.'
-                                        console.error('***ERROR: ', errorMessage);
-                                        console.error(error);
-                                        response.send(errorMessage);
-                                    }
-                                    else {
-                                        if (request.sendJson) {
-                                            response.json({
-                                                message: 'New pokedex entry was saved.'
-                                            });
-                                        }
-                                        else {
+                        newPokemon.save(function(error, result) {
+                            if (error) {
+                                var errorMessage = 'Unable to save the pokedex entry to the database.'
+                                console.error('***ERROR: ', errorMessage);
+                                console.error(error);
+                                response.send(errorMessage);
+                            } else {
+                                if (request.sendJson) {
+                                    response.json({
+                                        message: 'New pokedex entry was saved.'
+                                    });
+                                } else {
 
-                                            // Add a flash message for successful creation
-                                            request.flash('success', 'Pokedex entry was added.');
+                                    // Add a flash message for successful creation
+                                    request.flash('success', 'Pokedex entry was added.');
 
-                                            // Redirect back to the Pokemon add page.
-                                            response.redirect('/pokemon');
-                                        }
-                                    }
-                                })
+                                    // Redirect back to the Pokemon add page.
+                                    response.redirect('/pokemon');
+                                }
+                            }
+                        })
                     }
                 })
             }
@@ -177,7 +211,9 @@ router.get('/search', function(request, response) {
     var pokemonName = request.query.name;
     console.log('***HERE***', pokemonName);
 
-    Pokemon.findOne({name: pokemonName}, function(error, result) {
+    Pokemon.findOne({
+        name: pokemonName
+    }, function(error, result) {
         if (error) {
             var errorMessage = 'Unable to find pokemon by name ' + pokemonName;
             console.error('***ERROR: ' + errorMessage);
@@ -186,11 +222,14 @@ router.get('/search', function(request, response) {
         }
 
         if (result == null) {
-            response.send('Pokemon not found.');
+            response.send('Pokemon not found. ' + pokemonName);
             return;
-        }
-        else {
-            response.redirect('/pokemon/' + result.id);
+        } else {
+            if (request.sendJson) {
+                response.json(result)
+            } else {
+                response.redirect('/pokemon/' + result.id);
+            }
         }
     })
 })
@@ -200,28 +239,26 @@ router.get('/search', function(request, response) {
 router.get('/:id', function(request, response) {
     var pokemonId = request.params.id;
 
-        Pokemon
-            .findById(pokemonId)
-            .populate('moves')
-            .exec(function(error, result) {
-                if (error) {
-                    var errorMessage = 'Unable to find pokedex entry by id: ' + pokemonId;
-                    console.error('***ERROR: ', errorMessage);
-                    response.send(errorMessage);
+    Pokemon
+        .findById(pokemonId)
+        .populate('moves')
+        .exec(function(error, result) {
+            if (error) {
+                var errorMessage = 'Unable to find pokedex entry by id: ' + pokemonId;
+                console.error('***ERROR: ', errorMessage);
+                response.send(errorMessage);
+            } else {
+                if (request.sendJson) {
+                    response.json(result)
+                } else {
+                    response.render('pokemon/view', {
+                        data: {
+                            pokemon: result
+                        }
+                    });
                 }
-                else {
-                    if (request.sendJson) {
-                        response.json(result)
-                    }
-                    else {
-                        response.render('pokemon/view', {
-                            data: {
-                                pokemon: result
-                            }
-                        });
-                    }
-                }
-            });
+            }
+        });
     // Pokemon.findById (pokemonId, function(error, result) {
     //     if (error) {
     //         var errorMessage = 'Unable to find pokedex entry by id: ' + pokemonId;
@@ -242,32 +279,66 @@ router.get('/:id', function(request, response) {
 router.get('/:id/edit', function(request, response) {
     var pokemonId = request.params.id;
 
-    Pokemon.findById (pokemonId, function(error, result) {
+    Pokemon.findById(pokemonId, function(error, result) {
         if (error) {
             var errorMessage = 'Unable to find pokedex entry by id: ' + pokemonId;
             console.error('***ERROR: ', errorMessage);
             response.send(errorMessage);
-        }
-        else {
-            var list = [
-                { value: 'Bug'},
-                { value: 'Dark'},
-                { value: 'Dragon'},
-                { value: 'Electric'},
-                { value: 'Fairy'},
-                { value: 'Fighting'},
-                { value: 'Fire'},
-                { value: 'Flying'},
-                { value: 'Ghost'},
-                { value: 'Grass'},
-                { value: 'Ground'},
-                { value: 'Ice'},
-                { value: 'Normal'},
-                { value: 'Poison'},
-                { value: 'Psychic'},
-                { value: 'Rock'},
-                { value: 'Steel'},
-                { value: 'Water'}
+        } else {
+            var list = [{
+                    value: 'Bug'
+                },
+                {
+                    value: 'Dark'
+                },
+                {
+                    value: 'Dragon'
+                },
+                {
+                    value: 'Electric'
+                },
+                {
+                    value: 'Fairy'
+                },
+                {
+                    value: 'Fighting'
+                },
+                {
+                    value: 'Fire'
+                },
+                {
+                    value: 'Flying'
+                },
+                {
+                    value: 'Ghost'
+                },
+                {
+                    value: 'Grass'
+                },
+                {
+                    value: 'Ground'
+                },
+                {
+                    value: 'Ice'
+                },
+                {
+                    value: 'Normal'
+                },
+                {
+                    value: 'Poison'
+                },
+                {
+                    value: 'Psychic'
+                },
+                {
+                    value: 'Rock'
+                },
+                {
+                    value: 'Steel'
+                },
+                {
+                    value: 'Water'
+                }
             ]
 
             // Iterrate through each item in the
@@ -275,22 +346,22 @@ router.get('/:id/edit', function(request, response) {
             var key, item;
             for (key in list) {
                 // Grab the item in the list.
-                item = list [key];
+                item = list[key];
 
                 // Check if the pokemon returned has a type
                 // value equal to the value of the type in the list.
                 // console.log (item);
-                if (result.type.toLowerCase () == item.value.toLowerCase ()) {
+                if (result.type.toLowerCase() == item.value.toLowerCase()) {
                     // Set that the type is selected.
                     item.selected = 'selected';
                 }
 
-                item.class = item.value.toLowerCase ();
+                item.class = item.value.toLowerCase();
             }
 
             response.render('pokemon/edit', {
                 data: {
-                    title:'Edit Pokedex Entry',
+                    title: 'Edit Pokedex Entry',
                     method: 'PUT',
                     pokemon: result,
                     typeList: list
@@ -336,22 +407,20 @@ router.put('/:id', function(request, response) {
     //         }
     //     }
     // )
-    Pokemon.findByIdAndUpdate (pokemonId, request.body,
+    Pokemon.findByIdAndUpdate(pokemonId, request.body,
         function(error, result) {
-        if (error) {
-            console.error('***ERROR: Unable to update pokedex entry.', error);
-        }
-        else {
-            if(request.sendJson) {
-                response.json({
-                    message:"Pokedex Entry was updated."
-                });
+            if (error) {
+                console.error('***ERROR: Unable to update pokedex entry.', error);
+            } else {
+                if (request.sendJson) {
+                    response.json({
+                        message: "Pokedex Entry was updated."
+                    });
+                } else {
+                    response.redirect('/pokemon/' + pokemonId);
+                }
             }
-            else {
-                response.redirect('/pokemon/' + pokemonId);
-            }
-        }
-    });
+        });
 });
 
 router.get('/:id/delete', function(request, response) {
@@ -361,14 +430,12 @@ router.get('/:id/delete', function(request, response) {
         if (error) {
             console.error('***ERROR: Unable to delete pokedex entry by id.', error);
             response.send('***ERROR: Unable to delete pokedex entry by id.', pokemonId);
-        }
-        else {
-            if(request.sendJson) {
+        } else {
+            if (request.sendJson) {
                 response.json({
-                    message:"Pokedex Entry was deleted."
+                    message: "Pokedex Entry was deleted."
                 });
-            }
-            else {
+            } else {
                 response.redirect('/pokemon/');
             }
         }

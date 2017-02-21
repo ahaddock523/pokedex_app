@@ -6,6 +6,9 @@ var App;
             this.stateService = $state;
             this.stateParamsService = $stateParams;
             this.searchService = searchService;
+            if (this.stateParamsService.id) {
+                this.read(this.stateParamsService.id);
+            }
         }
         SearchController.prototype.read = function (_id) {
             var _this = this;
@@ -30,6 +33,18 @@ var App;
         SearchController.prototype.goToPage = function (route, data) {
             console.log('Here is the route data...', route, data);
             this.stateService.go(route, data);
+        };
+        SearchController.prototype.search = function () {
+            var _this = this;
+            this.searchService.search()
+                .success(function (response) {
+                console.log('Pokemon found by name!');
+                console.log('Response: ', response);
+                _this.searchResult = response;
+            })
+                .error(function (response) {
+                console.error('Unable to find pokemon by name.');
+            });
         };
         return SearchController;
     }());

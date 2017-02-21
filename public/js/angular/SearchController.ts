@@ -8,6 +8,7 @@ namespace App {
 
         public list;
         public individual;
+        public searchResult;
 
         constructor($state: angular.ui.IStateProvider, $stateParams: angular.ui.IStateParamsService, searchService: App.SearchService) {
             console.log('Search Controller has loaded...');
@@ -16,6 +17,9 @@ namespace App {
             this.stateParamsService = $stateParams;
             this.searchService = searchService;
 
+            if(this.stateParamsService.id) {
+                this.read(this.stateParamsService.id);
+            }
         }
 
         public read (_id) {
@@ -41,6 +45,18 @@ namespace App {
         public goToPage(route, data) {
             console.log('Here is the route data...', route, data);
             this.stateService.go(route, data);
+        }
+
+        public search () {
+            this.searchService.search()
+            .success((response)=>{
+                console.log('Pokemon found by name!');
+                console.log('Response: ', response);
+                this.searchResult = response;
+            })
+            .error((response)=>{
+                console.error('Unable to find pokemon by name.')
+            });
         }
     }
 }
