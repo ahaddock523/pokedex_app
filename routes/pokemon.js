@@ -66,75 +66,77 @@ router.get('/', function(request, response) {
 // })
 
 router.get('/create', function(request, response) {
-    var list = [{
-            value: 'Bug'
-        },
-        {
-            value: 'Dark'
-        },
-        {
-            value: 'Dragon'
-        },
-        {
-            value: 'Electric'
-        },
-        {
-            value: 'Fairy'
-        },
-        {
-            value: 'Fighting'
-        },
-        {
-            value: 'Fire'
-        },
-        {
-            value: 'Flying'
-        },
-        {
-            value: 'Ghost'
-        },
-        {
-            value: 'Grass'
-        },
-        {
-            value: 'Ground'
-        },
-        {
-            value: 'Ice'
-        },
-        {
-            value: 'Normal'
-        },
-        {
-            value: 'Poison'
-        },
-        {
-            value: 'Psychic'
-        },
-        {
-            value: 'Rock'
-        },
-        {
-            value: 'Steel'
-        },
-        {
-            value: 'Water'
-        }
-    ];
+    if (request.session.user && request.session.user.admin == true) {
+        var list = [{
+                value: 'Bug'
+            },
+            {
+                value: 'Dark'
+            },
+            {
+                value: 'Dragon'
+            },
+            {
+                value: 'Electric'
+            },
+            {
+                value: 'Fairy'
+            },
+            {
+                value: 'Fighting'
+            },
+            {
+                value: 'Fire'
+            },
+            {
+                value: 'Flying'
+            },
+            {
+                value: 'Ghost'
+            },
+            {
+                value: 'Grass'
+            },
+            {
+                value: 'Ground'
+            },
+            {
+                value: 'Ice'
+            },
+            {
+                value: 'Normal'
+            },
+            {
+                value: 'Poison'
+            },
+            {
+                value: 'Psychic'
+            },
+            {
+                value: 'Rock'
+            },
+            {
+                value: 'Steel'
+            },
+            {
+                value: 'Water'
+            }
+        ];
 
-    var key, item;
-    for (key in list) {
-        // Grab the item in the list.
-        item = list[key];
-        item.class = item.value.toLowerCase();
-    }
-    response.render('pokemon/edit', {
-        data: {
-            title: 'Add Pokedex Entry',
-            method: 'POST',
-            typeList: list
+        var key, item;
+        for (key in list) {
+            // Grab the item in the list.
+            item = list[key];
+            item.class = item.value.toLowerCase();
         }
-    });
+        response.render('pokemon/edit', {
+            data: {
+                title: 'Add Pokedex Entry',
+                method: 'POST',
+                typeList: list
+            }
+        });
+    }
 });
 
 // route to save new pokemon to database
@@ -209,7 +211,7 @@ router.post('/', function(request, response) {
 // Route to search for pokemon by name
 router.get('/search', function(request, response) {
     var pokemonName = request.query.name;
-    console.log('***HERE***', pokemonName);
+    console.log('***HERE***', request.query);
 
     Pokemon.findOne({
         name: pokemonName

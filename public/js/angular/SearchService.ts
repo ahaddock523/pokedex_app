@@ -28,7 +28,7 @@ namespace App {
             return promise;
         }
 
-        public search() {
+        public search(name) {
             let url="/pokemon/search";
 
             let promise = this.httpService({

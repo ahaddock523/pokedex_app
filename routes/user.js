@@ -14,9 +14,13 @@ var User = require('../model/user.js');
 // }
 
 router.get('/login', function(request, response) {
-    if (request.session.user) {
+    if (request.session.user && request.session.user.admin == true) {
         response.redirect('/search');
-    } else {
+    }
+    else if (request.session.user) {
+        response.redirect('/user/#/search');
+    }
+    else {
         response.render('login');
     }
 });
@@ -44,18 +48,26 @@ router.post('/login', function(request, response) {
                     admin: result.admin
                 }
                 console.log('This is the session data: ', request.session);
-
-                response.redirect('/search');
+                if(request.session.user.admin == true) {
+                    response.redirect('/search');
+                }
+                else {
+                    response.redirect('/user/#/search');
+                }
             }
         }
     );
 });
 
 router.get('/register', function(request, response) {
-    if (request.session.user) {
+    if (request.session.user && request.session.user.admin == true) {
         response.redirect('/search');
-    } else {
-        response.render('register');
+    }
+    else if (request.session.user){
+        response.render('/user');
+    }
+    else {
+        response.render("register");
     }
 });
 

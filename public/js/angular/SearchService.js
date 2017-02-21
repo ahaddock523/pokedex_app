@@ -20,7 +20,7 @@ var App;
             });
             return promise;
         };
-        SearchService.prototype.search = function () {
+        SearchService.prototype.search = function (name) {
             var url = "/pokemon/search";
             var promise = this.httpService({
                 url: url,

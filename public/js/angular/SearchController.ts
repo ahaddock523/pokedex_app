@@ -47,10 +47,11 @@ namespace App {
             this.stateService.go(route, data);
         }
 
-        public search () {
-            this.searchService.search()
+        public search (name) {
+            console.log(name);
+            this.searchService.search(name)
             .success((response)=>{
-                console.log('Pokemon found by name!');
+                console.log('Pokemon found by name! ' + name);
                 console.log('Response: ', response);
                 this.searchResult = response;
             })

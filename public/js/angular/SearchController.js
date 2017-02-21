@@ -34,11 +34,12 @@ var App;
             console.log('Here is the route data...', route, data);
             this.stateService.go(route, data);
         };
-        SearchController.prototype.search = function () {
+        SearchController.prototype.search = function (name) {
             var _this = this;
-            this.searchService.search()
+            console.log(name);
+            this.searchService.search(name)
                 .success(function (response) {
-                console.log('Pokemon found by name!');
+                console.log('Pokemon found by name! ' + name);
                 console.log('Response: ', response);
                 _this.searchResult = response;
             })
