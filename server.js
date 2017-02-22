@@ -47,15 +47,30 @@ server.use(methodOverride (function(request, response) {
     }
 }));
 
+var session = require('cookie-session');
+
+server.use(session({
+    name:'session',
+    secret: 'This is my secret phrase',
+    maxAge: 24*60*60*1000
+}));
 // Load in the express session handler
-var session = require ('express-session');
+// var session = require ('express-session');
+
+// var redis = require('redis').createClient();
+// var session = require ('connect-redis')(express);
+//
+// server.configure(function() {
+//     server.use(express.cookieParser());
+//     server.use(express.session({ store: new session, secret: 'This is my secret phrase'}));
+// });
 
 // Configure the session to be used by express
-server.use(session({
-    secret: 'This is my secret phrase', // Used to hash/encrypt the session key
-    resave: false,
-    saveUninitialized: true
-}));
+// server.use(session({
+//     secret: 'This is my secret phrase', // Used to hash/encrypt the session key
+//     resave: false,
+//     saveUninitialized: true
+// }));
 
 // load in the connect-flash express middleware
 var flash = require ('connect-flash');

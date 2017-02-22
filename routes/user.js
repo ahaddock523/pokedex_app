@@ -88,7 +88,7 @@ router.post('/register', function(request, response) {
 });
 
 router.get('/logout', function(request, response) {
-    request.session.destroy();
+    request.session = null;
 
     response.redirect('/user/login');
 });
